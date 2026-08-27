@@ -312,8 +312,16 @@ function initSnake() {
 }
 
 function spawnFood() {
-    food.x = Math.floor(Math.random() * 24) * 10;
-    food.y = Math.floor(Math.random() * 24) * 10;
+    food.x = Math.floor(Math.random() * 26) * 10;
+    food.y = Math.floor(Math.random() * 26) * 10;
+}
+
+function changeSnakeDir(newDx, newDy) {	
+    // Prevent 180-degree immediate reverse self-collision
+    if ((newDx === -10 && dx === 10) || (newDx === 10 && dx === -10)) return;
+    if ((newDy === -10 && dy === 10) || (newDy === 10 && dy === -10)) return;
+    dx = newDx * 10;
+    dy = newDy * 10;
 }
 
 function updateSnake() {
@@ -342,9 +350,51 @@ function updateSnake() {
     snake.forEach(part => ctx.fillRect(part.x, part.y, 10, 10));
 }
 
+// Keyboard Controls for Desktop
 window.addEventListener('keydown', e => {
-    if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -10; }
-    if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 10; }
-    if (e.key === 'ArrowLeft' && dx === 0) { dx = -10; dy = 0; }
-    if (e.key === 'ArrowRight' && dx === 0) { dx = 10; dy = 0; }
+    if (e.key === 'ArrowUp') { changeSnakeDir(0, -1); e.preventDefault(); }
+    if (e.key === 'ArrowDown') { changeSnakeDir(0, 1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft') { changeSnakeDir(-1, 0); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { changeSnakeDir(1, 0); e.preventDefault(); }
 });
+
+// Touch Swipe Gesture Support for Mobile
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }
+}, {passive: true});
+
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault(); // Prevents page from scrolling while playing
+}, {passive: false});
+
+canvas.addEventListener('touchend', e => {
+    if (!touchStartX || !touchStartY) return;
+
+    let touchEndX = e.changedTouches[0].clientX;
+    let touchEndY = e.changedTouches[0].clientY;
+
+    let diffX = touchEndX - touchStartX;
+    let diffY = touchEndY - touchStartY;
+
+    // Minimum swipe threshold to avoid accidental micro-touches
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (Math.abs(diffX) > 20) {
+            if (diffX > 0) changeSnakeDir(1, 0);   // Swipe Right
+            else changeSnakeDir(-1, 0);          // Swipe Left
+        }
+    } else {
+        if (Math.abs(diffY) > 20) {
+            if (diffY > 0) changeSnakeDir(0, 1);   // Swipe Down
+            else changeSnakeDir(0, -1);          // Swipe Up
+        }
+    }
+
+    touchStartX = 0;
+    touchStartY = 0;
+}, {passive: true});
