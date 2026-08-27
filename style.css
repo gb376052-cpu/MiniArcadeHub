@@ -253,3 +253,33 @@ canvas {
     display: block;
     margin: 0 auto;
 }
+/* Mobile D-Pad for Snake Game */
+.snake-dpad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    gap: 5px;
+}
+.dpad-mid {
+    display: flex;
+    gap: 50px;
+}
+.dpad-btn {
+    background: #1e293b;
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    font-size: 1.2rem;
+    width: 50px;
+    height: 45px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.1s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.dpad-btn:active {
+    background: #38bdf8;
+    color: #0f172a;
+    transform: scale(0.95);
+}
