@@ -11,7 +11,10 @@ function switchGame(gameId) {
 }
 
 function goHome() {
-    clearInterval(snakeInterval);
+    if (snakeInterval) {
+        clearInterval(snakeInterval);
+        snakeInterval = null;
+    }
     document.querySelectorAll('.game-section').forEach(sec => sec.classList.remove('active'));
     document.getElementById('game-menu').classList.add('active');
 }
@@ -23,9 +26,9 @@ function toggleTTTMode() {
     let mode = document.getElementById('ttt-mode').value;
     let aiDiffSelect = document.getElementById('ttt-ai-diff');
     if (mode === 'pvp') {
-        aiDiffSelect.style.display = 'none'; // Hide AI difficulty in 2-player mode
+        aiDiffSelect.style.display = 'none';
     } else {
-        aiDiffSelect.style.display = 'inline-block'; // Show AI difficulty in vs AI mode
+        aiDiffSelect.style.display = 'inline-block';
     }
 }
 
@@ -303,7 +306,7 @@ function updateSnakeSkin() {
 }
 
 function initSnake() {
-    clearInterval(snakeInterval);
+    if (snakeInterval) clearInterval(snakeInterval);
     snake = [{x: 100, y: 100}, {x: 90, y: 100}, {x: 80, y: 100}];
     dx = 10; dy = 0; snakeScore = 0;
     document.getElementById('snake-status').textContent = `Score: ${snakeScore}`;
@@ -316,10 +319,13 @@ function spawnFood() {
     food.y = Math.floor(Math.random() * 26) * 10;
 }
 
-function changeSnakeDir(newDx, newDy) {	
-    // Prevent 180-degree immediate reverse self-collision
-    if ((newDx === -10 && dx === 10) || (newDx === 10 && dx === -10)) return;
-    if ((newDy === -10 && dy === 10) || (newDy === 10 && dy === -10)) return;
+function changeSnakeDir(newDx, newDy) { 
+    // Yeh check rok dega ki opposite direction press karne par game over na ho
+    if (newDx === -1 && dx === 10) return;
+    if (newDx === 1 && dx === -10) return;
+    if (newDy === -1 && dy === 10) return;
+    if (newDy === 1 && dy === -10) return;
+
     dx = newDx * 10;
     dy = newDy * 10;
 }
@@ -370,7 +376,7 @@ canvas.addEventListener('touchstart', e => {
 }, {passive: true});
 
 canvas.addEventListener('touchmove', e => {
-    e.preventDefault(); // Prevents page from scrolling while playing
+    e.preventDefault();
 }, {passive: false});
 
 canvas.addEventListener('touchend', e => {
@@ -382,16 +388,15 @@ canvas.addEventListener('touchend', e => {
     let diffX = touchEndX - touchStartX;
     let diffY = touchEndY - touchStartY;
 
-    // Minimum swipe threshold to avoid accidental micro-touches
     if (Math.abs(diffX) > Math.abs(diffY)) {
         if (Math.abs(diffX) > 20) {
-            if (diffX > 0) changeSnakeDir(1, 0);   // Swipe Right
-            else changeSnakeDir(-1, 0);          // Swipe Left
+            if (diffX > 0) changeSnakeDir(1, 0);
+            else changeSnakeDir(-1, 0);
         }
     } else {
         if (Math.abs(diffY) > 20) {
-            if (diffY > 0) changeSnakeDir(0, 1);   // Swipe Down
-            else changeSnakeDir(0, -1);          // Swipe Up
+            if (diffY > 0) changeSnakeDir(0, 1);
+            else changeSnakeDir(0, -1);
         }
     }
 
