@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gaurav's Mini Arcade Hub</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -31,7 +31,7 @@
                     <span class="icon">✊✋</span>
                     <div>
                         <h3>Rock Paper Scissors</h3>
-                        <p>Easy, Medium & Hard CPU challenges</p>
+                        <p>Easy, Normal & Hard CPU challenges</p>
                     </div>
                 </button>
                 <button class="menu-card-btn" onclick="switchGame('memory')">
@@ -52,7 +52,7 @@
                     <span class="icon">🐍🕹️</span>
                     <div>
                         <h3>Retro Snake</h3>
-                        <p>Customizable snake skins & speeds</p>
+                        <p>Swipe controls for Mobile & Desktop</p>
                     </div>
                 </button>
             </div>
@@ -67,7 +67,6 @@
                     <option value="pvp">2 Players</option>
                     <option value="pve" selected>vs AI</option>
                 </select>
-                <!-- AI Difficulty (Yeh sirf vs AI me dikhega) -->
                 <select id="ttt-ai-diff" onchange="initTTT()">
                     <option value="easy">Easy AI</option>
                     <option value="medium" selected>Medium AI</option>
@@ -159,8 +158,21 @@
                 <button class="action-btn" onclick="initSnake()">Restart</button>
             </div>
             <div id="snake-status" class="status-msg">Score: 0</div>
-            <canvas id="snake-canvas" width="250" height="250"></canvas>
-            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">Use Arrow Keys to Play</p>
+            
+            <!-- Canvas with touch-action prevention for smooth swiping -->
+            <canvas id="snake-canvas" width="260" height="260" style="touch-action: none;"></canvas>
+            
+            <!-- On-screen D-Pad for Mobile Players who prefer buttons -->
+            <div class="snake-dpad">
+                <button class="dpad-btn dpad-up" onclick="changeSnakeDir(0, -1)">▲</button>
+                <div class="dpad-mid">
+                    <button class="dpad-btn dpad-left" onclick="changeSnakeDir(-1, 0)">◀</button>
+                    <button class="dpad-btn dpad-right" onclick="changeSnakeDir(1, 0)">▶</button>
+                </div>
+                <button class="dpad-btn dpad-down" onclick="changeSnakeDir(0, 1)">▼</button>
+            </div>
+
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">💡 Swipe on screen or use buttons/arrow keys</p>
         </div>
 
     </div>
