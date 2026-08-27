@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav's Mini Arcade Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🎮 Mini Arcade Hub</h1>
+        <p>Select a game to start playing</p>
+    </header>
+
+    <!-- Main Arcade Container -->
+    <div class="arcade-container">
+
+        <!-- HOME MENU -->
+        <div id="game-menu" class="game-section active">
+            <h2>Choose a Game</h2>
+            <div class="menu-list">
+                <button class="menu-card-btn" onclick="switchGame('ttt')">
+                    <span class="icon">❌⭕</span>
+                    <div>
+                        <h3>Tic-Tac-Toe Pro</h3>
+                        <p>3x3 to 5x5 grid with Smart AI modes</p>
+                    </div>
+                </button>
+                <button class="menu-card-btn" onclick="switchGame('rps')">
+                    <span class="icon">✊✋</span>
+                    <div>
+                        <h3>Rock Paper Scissors</h3>
+                        <p>Easy, Medium & Hard CPU challenges</p>
+                    </div>
+                </button>
+                <button class="menu-card-btn" onclick="switchGame('memory')">
+                    <span class="icon">🃏🧩</span>
+                    <div>
+                        <h3>Memory Match</h3>
+                        <p>Easy, Medium & Hard grid pairings</p>
+                    </div>
+                </button>
+                <button class="menu-card-btn" onclick="switchGame('guess')">
+                    <span class="icon">🔢🎯</span>
+                    <div>
+                        <h3>Number Guessing</h3>
+                        <p>Easy, Medium & Hard range puzzles</p>
+                    </div>
+                </button>
+                <button class="menu-card-btn" onclick="switchGame('snake')">
+                    <span class="icon">🐍🕹️</span>
+                    <div>
+                        <h3>Retro Snake</h3>
+                        <p>Customizable snake skins & speeds</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- 1. TIC-TAC-TOE -->
+        <div id="game-ttt" class="game-section">
+            <button class="back-btn" onclick="goHome()">← Back to Menu</button>
+            <h2>Tic-Tac-Toe</h2>
+            <div class="controls-row">
+                <select id="ttt-mode" onchange="toggleTTTMode(); initTTT();">
+                    <option value="pvp">2 Players</option>
+                    <option value="pve" selected>vs AI</option>
+                </select>
+                <!-- AI Difficulty (Yeh sirf vs AI me dikhega) -->
+                <select id="ttt-ai-diff" onchange="initTTT()">
+                    <option value="easy">Easy AI</option>
+                    <option value="medium" selected>Medium AI</option>
+                    <option value="hard">Hard AI (Smart)</option>
+                </select>
+                <select id="ttt-size" onchange="initTTT()">
+                    <option value="3" selected>3 x 3</option>
+                    <option value="4">4 x 4</option>
+                    <option value="5">5 x 5</option>
+                </select>
+                <button class="action-btn" onclick="initTTT()">Restart</button>
+            </div>
+            <div id="ttt-status" class="status-msg">Player X's Turn</div>
+            <div id="ttt-board" class="ttt-board"></div>
+        </div>
+
+        <!-- 2. ROCK PAPER SCISSORS -->
+        <div id="game-rps" class="game-section">
+            <button class="back-btn" onclick="goHome()">← Back to Menu</button>
+            <h2>Rock Paper Scissors</h2>
+            <div class="controls-row" style="margin-bottom: 10px;">
+                <label style="font-size: 0.85rem; color: #94a3b8; align-self: center;">Difficulty:</label>
+                <select id="rps-diff" onchange="resetRPS()">
+                    <option value="easy">Easy (Predictable)</option>
+                    <option value="normal" selected>Normal (Balanced)</option>
+                    <option value="hard">Hard (Cheating CPU)</option>
+                </select>
+            </div>
+            <div id="rps-status" class="status-msg">Choose your weapon!</div>
+            <div class="rps-arena">
+                <div>You: <span id="player-choice">-</span></div>
+                <div>CPU: <span id="cpu-choice">-</span></div>
+            </div>
+            <div class="rps-choices">
+                <button class="rps-btn" onclick="playRPS('rock')">✊</button>
+                <button class="rps-btn" onclick="playRPS('paper')">✋</button>
+                <button class="rps-btn" onclick="playRPS('scissors')">✌️</button>
+            </div>
+            <p id="rps-score" style="margin-top: 15px; color: #94a3b8;">Score - You: 0 | CPU: 0</p>
+            <button class="action-btn" style="margin-top: 15px;" onclick="resetRPS()">Reset Score</button>
+        </div>
+
+        <!-- 3. MEMORY MATCH -->
+        <div id="game-memory" class="game-section">
+            <button class="back-btn" onclick="goHome()">← Back to Menu</button>
+            <h2>Memory Match</h2>
+            <div class="controls-row">
+                <select id="memory-diff" onchange="initMemory()">
+                    <option value="easy">Easy (4 Pairs)</option>
+                    <option value="medium" selected>Medium (6 Pairs)</option>
+                    <option value="hard">Hard (8 Pairs)</option>
+                </select>
+                <button class="action-btn" onclick="initMemory()">Restart</button>
+            </div>
+            <div id="memory-status" class="status-msg">Match all pairs!</div>
+            <div id="memory-grid" class="memory-grid"></div>
+        </div>
+
+        <!-- 4. NUMBER GUESSING -->
+        <div id="game-guess" class="game-section">
+            <button class="back-btn" onclick="goHome()">← Back to Menu</button>
+            <h2>Guess the Number</h2>
+            <div class="controls-row">
+                <select id="guess-diff" onchange="initGuess()">
+                    <option value="easy" selected>Easy (1 - 50)</option>
+                    <option value="medium">Medium (1 - 100)</option>
+                    <option value="hard">Hard (1 - 200)</option>
+                </select>
+                <button class="action-btn" onclick="initGuess()">New Game</button>
+            </div>
+            <p id="guess-range-label" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Guess a number between 1 and 50</p>
+            <div class="guess-box">
+                <input type="number" id="guess-input" placeholder="Enter number">
+                <button class="action-btn" onclick="checkGuess()">Guess</button>
+            </div>
+            <div id="guess-status" class="status-msg">Make your guess!</div>
+        </div>
+
+        <!-- 5. RETRO SNAKE -->
+        <div id="game-snake" class="game-section">
+            <button class="back-btn" onclick="goHome()">← Back to Menu</button>
+            <h2>Retro Snake</h2>
+            <div class="controls-row">
+                <select id="snake-skin" onchange="updateSnakeSkin()">
+                    <option value="cyan">🟦 Classic Cyan</option>
+                    <option value="green">🟢 Neon Viper</option>
+                    <option value="gold">🟨 Golden Python</option>
+                </select>
+                <button class="action-btn" onclick="initSnake()">Restart</button>
+            </div>
+            <div id="snake-status" class="status-msg">Score: 0</div>
+            <canvas id="snake-canvas" width="250" height="250"></canvas>
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">Use Arrow Keys to Play</p>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
