@@ -159,20 +159,25 @@
             </div>
             <div id="snake-status" class="status-msg">Score: 0</div>
             
-            <!-- Canvas with touch-action prevention for smooth swiping -->
-            <canvas id="snake-canvas" width="260" height="260" style="touch-action: none;"></canvas>
+            <!-- Canvas -->
+            <canvas id="snake-canvas" width="270" height="270" style="touch-action: none;"></canvas>
             
-            <!-- On-screen D-Pad for Mobile Players who prefer buttons -->
-            <div class="snake-dpad">
+            <!-- Cross D-Pad Layout (Aamne-saamne with gap) -->
+            <div class="snake-dpad-grid">
+                <div class="dpad-empty"></div>
                 <button class="dpad-btn dpad-up" onclick="changeSnakeDir(0, -1)">▲</button>
-                <div class="dpad-mid">
-                    <button class="dpad-btn dpad-left" onclick="changeSnakeDir(-1, 0)">◀</button>
-                    <button class="dpad-btn dpad-right" onclick="changeSnakeDir(1, 0)">▶</button>
-                </div>
+                <div class="dpad-empty"></div>
+                
+                <button class="dpad-btn dpad-left" onclick="changeSnakeDir(-1, 0)">◀</button>
+                <div class="dpad-center-dot"></div>
+                <button class="dpad-btn dpad-right" onclick="changeSnakeDir(1, 0)">▶</button>
+                
+                <div class="dpad-empty"></div>
                 <button class="dpad-btn dpad-down" onclick="changeSnakeDir(0, 1)">▼</button>
+                <div class="dpad-empty"></div>
             </div>
 
-            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">💡 Swipe on screen or use buttons/arrow keys</p>
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 12px;">💡 Swipe screen or use the D-Pad buttons</p>
         </div>
 
     </div>
